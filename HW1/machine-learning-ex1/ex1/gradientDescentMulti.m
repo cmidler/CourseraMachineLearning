@@ -6,7 +6,7 @@ function [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters
 % Initialize some useful values
 m = length(y); % number of training examples
 J_history = zeros(num_iters, 1);
-
+t_len = length(theta); % number of thetas to update
 for iter = 1:num_iters
 
     % ====================== YOUR CODE HERE ======================
@@ -18,20 +18,21 @@ for iter = 1:num_iters
     %
 
 
-
-
-
-
-
-
-
-
-
     % ============================================================
 
     % Save the cost J in every iteration    
     J_history(iter) = computeCostMulti(X, y, theta);
-
+    %fprintf('J = %i\n', J_history(iter));
+    tmpTheta = theta;
+    diff = X*theta-y;%compute difference b/w hypothesis and observed
+    %loop over all theta values 
+    for i = 1:t_len
+        %multiply the difference by the correspond column in matrix X
+        preSum = diff.*X(:,i); 
+        s = sum(preSum(:));%sum it
+        tmpTheta(i) = theta(i) - ((alpha/m)*s);
+    end
+    theta = tmpTheta; 
 end
 
 end
